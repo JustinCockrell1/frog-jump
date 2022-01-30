@@ -41,6 +41,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3000, () => {
+server.listen(process.env.PORT, () => {
   console.log('listening on *:3000');
 });
