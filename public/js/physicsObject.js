@@ -16,12 +16,12 @@ class PhysicsObject {
         this.y+=this.vy*elapsedTime;
         if(this.hasGravity) {
               //Gravity
-        if(this.y+this.h < 17)
+        //if(this.y+this.h < 17)
         this.vy += 30*elapsedTime;
-        else {
-            this.y = 17 - this.h;
-            this.vy = 0;
-        }
+       // else {
+           // this.y = 17 - this.h;
+            //this.vy = 0;
+       // }
         }
         this.handleCollisions();
     }

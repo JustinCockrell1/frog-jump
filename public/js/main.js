@@ -5,7 +5,11 @@ let canvas;
 
 const graphics = new Graphics();
 const camera = new Camera();
-const tileMap = new TileMap(0,0,20,20);
+const tileMap = new TileMap(0,0,20,60);
+
+graphics.add("dirt", "images/dirt.png");
+graphics.add("sky", "images/sky.png");
+graphics.add("frogresting", "images/resting.png");
 
 tileMap.tiles = 
 `#......#...........#\
@@ -16,13 +20,53 @@ tileMap.tiles =
 ....................\
 ....................\
 ....................\
+..............#.....\
+..............#.....\
+..............#.....\
+..............#.....\
+..............#.....\
+....#.....#...#.....\
+.....######...#.....\
+....................\
+..#........#........\
+...#########........\
+........#...........\
+......#.............\
+#......#...........#\
+...................#\
 ....................\
 ....................\
 ....................\
 ....................\
 ....................\
-....#.....#.........\
-.....######.........\
+....................\
+..............#.....\
+..............#.....\
+..............#.....\
+..............#.....\
+..............#.....\
+....#.....#...#.....\
+.....######...#.....\
+....................\
+..#........#........\
+...#########........\
+........#...........\
+......#.............\
+#......#...........#\
+...................#\
+....................\
+....................\
+....................\
+....................\
+....................\
+....................\
+..............#.....\
+..............#.....\
+..............#.....\
+..............#.....\
+..............#.....\
+....#.....#...#.....\
+.....######...#.....\
 ....................\
 ..#........#........\
 ...#########........\
@@ -40,14 +84,20 @@ function init(){
     window.requestAnimationFrame(tick);
 }
 
-let player = new Player(5,5);
+let player = [];
+let uniqueId = 0;
+player[uniqueId] = new Player(5,5)
+let jumpTimer = 0.0;
+let mouseHeld = false;
 
 function draw() {
     ctx.fillStyle="white";
     ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
     ctx.strokeRect(0,0,ctx.canvas.width,ctx.canvas.height);
     tileMap.draw();
-    player.draw();
+    for(let i = 0; i < player.length; i++) {
+        player[i].draw();
+    }
 }
 
 let prevTime = 0;
@@ -56,7 +106,14 @@ function tick(totalTime) {
     let elapsedTime = (totalTime-prevTime)/1000;
     prevTime = totalTime;
 
-    player.tick(elapsedTime);
+    player[uniqueId].tick(elapsedTime);
+
+    if(mouseHeld) {
+        if(jumpTimer<2) jumpTimer+=elapsedTime;
+        else jumpTimer = 2;
+    }
+
+    socket.emit("p-update", {x:player[uniqueId.x], y:player[uniqueId].y})
 
     draw();
     window.requestAnimationFrame(tick);
@@ -77,22 +134,40 @@ function resizeCanvas() {
 
 document.addEventListener("keydown",(e)=>{
 
-    if(e.key=="ArrowLeft") {
-        camera.x--;
+    if(e.key=="ArrowUp") {
+        camera.y--;
     }
-    else if(e.key=="ArrowRight") {
-        camera.x++;
+    else if(e.key=="ArrowDown") {
+        camera.y++;
     }
     else if(e.key == "a") {
-        player.vx = -1;
+        player[uniqueId].vx = -1;
     }
     else if(e.key=="d") {
-        player.vx = 1;
+        player[uniqueId].vx = 1;
     }
 
 });
 
-document.addEventListener("mousedown",(e)=>{
+
+
+document.addEventListener("mousedown",handleMouseDown);
+
+
+//document.addEventListener("touchend", handleMouseUp);
+//document.addEventListener("touchstart", handleMouseDown);
+
+document.addEventListener("mouseup",handleMouseUp);
+
+function handleMouseDown(e) {
+    if(player[uniqueId].canJump)
+    mouseHeld=true;
+    //alert("mousedown")
+}
+
+function handleMouseUp(e) {
+
+    
     const box = canvas.getBoundingClientRect();
     const mouseX = (e.clientX-box.x)/cellSize+camera.x;
     const mouseY = (e.clientY-box.y)/cellSize+camera.y;
@@ -102,17 +177,22 @@ document.addEventListener("mousedown",(e)=>{
     console.log(camera.x);
     console.log(camera.y);
 
-    const diffX = mouseX - player.x;
-    const diffY = mouseY - player.y;
+    const diffX = mouseX - player[uniqueId].x;
+    const diffY = mouseY - player[uniqueId].y;
 
     const distance = Math.sqrt(diffX*diffX+diffY*diffY);
 
-    player.vx = (diffX/distance)*10;
-    player.vy = (diffY/distance)*30;
-    player.hasGravity=true;
-    
-});
+    if(player[uniqueId].canJump) {
+    player[uniqueId].vx = (diffX/distance)*20*(jumpTimer/2);
+    player[uniqueId].vy = (diffY/distance)*30*(jumpTimer/2);
+    player[uniqueId].hasGravity=true;
+    player[uniqueId].canJump=false;
+    }
+//alert("mouseup")
 
-document.addEventListener("mouseup",(e)=>{
+mouseHeld = false;
+jumpTimer = 0;
+}
 
-});
+
+

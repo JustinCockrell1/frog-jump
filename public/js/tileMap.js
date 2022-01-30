@@ -6,14 +6,12 @@ class TileMap {
         this.w = w;
         this.h = h;
         this.tiles = "";
-        for(let i = 0; i < this.w*this.h; i++) {
-            this.tiles+=".";
-        }
+
         console.log("tile"+this.tiles+"tile");
     }
 
     getTile(x,y) {
-        return this.tiles.charAt(y*this.h+x);
+        return this.tiles.charAt(y*this.w+x);
     }
 
     hitTile(x, y) {
@@ -21,7 +19,7 @@ class TileMap {
         y = Math.floor(y);
         x-=this.x;
         y-=this.y;
-        return this.tiles.charAt(y*this.h+x);
+        return this.tiles.charAt(y*this.w+x);
     }
 
     topLeft() {
@@ -44,14 +42,19 @@ class TileMap {
         for(let i = topLeft.x; i < bottomRight.x; i++) {
             for(let j = topLeft.y; j < bottomRight.y; j++) {
                 const tile = this.getTile(i,j);
-               
+                const pos = camera.getPos(i+this.x,j+this.y);
+                const size = camera.getSize(1,1);
                 if(tile=="#") {
-                    const pos = camera.getPos(i+this.x,j+this.y);
-                    const size = camera.getSize(1,1);
+                 
                     ctx.fillStyle="red";
                     ctx.fillRect(pos.x, pos.y, size.w, size.h);
                     ctx.strokeRect(pos.x, pos.y, size.w, size.h);
+                    ctx.drawImage(graphics.get("dirt"), pos.x, pos.y, size.w, size.h);
                     
+                }
+                else if(tile==".") {
+                    ctx.drawImage(graphics.get("sky"), pos.x, pos.y, size.w, size.h);
+
                 }
             }
         }
