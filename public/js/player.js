@@ -4,6 +4,7 @@ class Player extends PhysicsObject {
         this.onGround = false;
         this.canJump = true;
         this.dir = 1;
+        this.name = "";
     }
 
     draw() {
@@ -13,10 +14,13 @@ class Player extends PhysicsObject {
        // ctx.fillRect(pos.x, pos.y, size.w, size.h);
        if(this.dir==1) 
         ctx.drawImage(graphics.get("frogresting"), pos.x, pos.y, size.w, size.h);
-        else if(this.dir==-1) {
-            ctx.drawImage(graphics.get("frogrestingleft"), pos.x, pos.y, size.w, size.h);
+        else if(this.dir==-1) 
+        ctx.drawImage(graphics.get("frogrestingleft"), pos.x, pos.y, size.w, size.h);
 
-        }
+            ctx.font = '15px serif';
+            ctx.fillStyle="black";
+            ctx.fillText(this.name,pos.x, pos.y+7);
+        
     }
 
     jump() {
@@ -27,7 +31,8 @@ class Player extends PhysicsObject {
         const points = [{x:0,y:0},{x:1,y:0},{x:0,y:.9},{x:.9,y:.9}];
         const hittable = ["#","g"];
         for(let i = 0; i < points.length; i++) {
-            if(hittable.includes(tileMap.hitTile(this.x+points[i].x, this.y+points[i].y))) {
+            const tileName = tileMap.hitTile(this.x+points[i].x, this.y+points[i].y);
+            if(hittable.includes(tileName)) {
                 const tileL = Math.floor(this.x+points[i].x);
                 const tileT = Math.floor(this.y+points[i].y);
                 const tileR = tileL+1;
@@ -72,6 +77,11 @@ class Player extends PhysicsObject {
 
             
             } 
+            else if(tileName=="y") {
+                //Hit the fly
+                console.log("hit fly");
+                socket.emit("resetgame", this.name);
+            }
         }
     }
 }

@@ -20,8 +20,8 @@ io.on('connection', (socket) => {
     users.push(socket);
     socket.emit("setfrogs", frogs);
     socket.emit("setid", users.length-1);
-    io.emit("addfrog", {x:15, y:55,d:1});
-    frogs.push({x:15,y:55,d:1});
+    io.emit("addfrog", {x:15, y:55,d:1,name:""});
+    frogs.push({x:15,y:55,d:1,name:""});
 
 
     socket.on('disconnect', (msg)=> {
@@ -35,12 +35,24 @@ io.on('connection', (socket) => {
     socket.on('p-update',(msg)=>{
         const i = users.indexOf(socket);
         //console.log(msg)
-        frogs[i]=msg;
+        frogs[i].x=msg.x;
+        frogs[i].y=msg.y;
+        frogs[i].d=msg.d;
         socket.broadcast.emit('p-update', {pos:frogs[i], id:i});
         
     });
+
+    socket.on('setname',(name)=>{
+        const i = users.indexOf(socket);
+        frogs[i].name=name;
+        socket.broadcast.emit('setname', {name:name, id:i});
+    });
+
+    socket.on('resetgame', (name)=>{
+        io.emit("resetgame", name);
+    });
 });
 
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT || 3000, () => {
   console.log('listening on *:3000');
 });

@@ -60,6 +60,10 @@ class TileMap {
                     ctx.drawImage(graphics.get("grass"), pos.x, pos.y, size.w, size.h);
 
                 }
+                else if(tile=="y") {
+                    ctx.drawImage(graphics.get("fly"), pos.x, pos.y, size.w, size.h);
+
+                }
             }
         }
     }

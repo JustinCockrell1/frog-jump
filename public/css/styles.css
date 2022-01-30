@@ -14,3 +14,57 @@ body {
     width: 100%;
     align-items: center;
 }
+
+
+
+.display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    background-color: rgba(127,127,127,0.7);
+    z-index: 10;
+    padding: 10%;
+    border-radius: 10%;
+}
+
+.name input {
+    padding: 2rem;
+    font-size: 1.6rem;
+    width: 100%;
+    border-radius: 10rem;
+    margin: 1rem;
+    outline: none;
+    border: none;
+    text-align: center;
+}
+
+button {
+    width: 100%;
+    padding: 2rem;
+    font-size: 1.6rem;
+    border-radius: 10rem;
+    outline: none;
+    border: none;
+    margin-top: 1rem;
+}
+
+button:hover {
+    background-color: orange;
+    cursor: pointer;
+}
+
+.scoreboard {
+    display: none;
+}
+
+h1 {
+    background-color: orange;
+    font-size: 4rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: green;
+    border-radius: 10rem;
+    padding: 2rem;
+}

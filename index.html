@@ -11,7 +11,19 @@
 
 <div class="container">
 <canvas id="canvas"></canvas>
+
+<div class="display name">
+    <h1>Frog Jump</h1>
+    <input id="name-input" type="text" value="" placeholder="Enter your name">
+    <button id="name-button">Play!</button>
 </div>
+
+<div class="display scoreboard">
+    <h1 id="scoreboard-message">You Win!</h1>
+    <button id="resume-button">Keep Playing!</button>
+</div>
+</div>
+
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/graphics.js"></script>
@@ -23,5 +35,6 @@
 <script src="js/tileMap.js"></script>
 <script src="js/main.js"></script>
 <script src="js/socketHandler.js"></script>
+<script src="js/button.js"></script>
 </body>
 </html>

@@ -14,12 +14,13 @@ graphics.add("frogrestingleft", "images/restingleft.png");
 graphics.add("flower1","images/flower1.png");
 graphics.add("flower2","images/flower2.png");
 graphics.add("grass","images/grass.png");
+graphics.add("fly","images/fly.png");
 
 
 tileMap.tiles = 
 `####################\
 #..................#\
-#..................#\
+#.............y....#\
 #..................#\
 #..................#\
 #..................#\
@@ -98,10 +99,11 @@ let mouseHeld = false;
 function drawHealthBar() {
     const pos = camera.getPos(player[uniqueId].x, player[uniqueId].y);
     const size = camera.getSize(player[uniqueId].w, player[uniqueId].h);
+
     ctx.fillStyle = "grey";
-    ctx.fillRect(pos.x, pos.y, 40,10);
+    ctx.fillRect(pos.x, pos.y, cellSize,cellSize/4);
     ctx.fillStyle = "green";
-    ctx.fillRect(pos.x, pos.y, 40*(jumpTimer/2),10);
+    ctx.fillRect(pos.x, pos.y, cellSize*(jumpTimer/2),cellSize/4);
 }
 
 function draw() {
@@ -112,6 +114,10 @@ function draw() {
     for(let i = 0; i < player.length; i++) {
         player[i].draw();
     }
+
+ 
+
+
     if(mouseHeld)
     drawHealthBar();
 }
@@ -154,22 +160,22 @@ function resizeCanvas() {
 }
 
 
-document.addEventListener("keydown",(e)=>{
+// document.addEventListener("keydown",(e)=>{
 
-    if(e.key=="ArrowUp") {
-        camera.y--;
-    }
-    else if(e.key=="ArrowDown") {
-        camera.y++;
-    }
-    else if(e.key == "a") {
-        player[uniqueId].vx = -1;
-    }
-    else if(e.key=="d") {
-        player[uniqueId].vx = 1;
-    }
+//     if(e.key=="ArrowUp") {
+//         camera.y--;
+//     }
+//     else if(e.key=="ArrowDown") {
+//         camera.y++;
+//     }
+//     else if(e.key == "a") {
+//         player[uniqueId].vx = -1;
+//     }
+//     else if(e.key=="d") {
+//         player[uniqueId].vx = 1;
+//     }
 
-});
+// });
 
 
 
