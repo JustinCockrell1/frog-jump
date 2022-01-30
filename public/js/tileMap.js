@@ -45,15 +45,19 @@ class TileMap {
                 const pos = camera.getPos(i+this.x,j+this.y);
                 const size = camera.getSize(1,1);
                 if(tile=="#") {
-                 
-                    ctx.fillStyle="red";
-                    ctx.fillRect(pos.x, pos.y, size.w, size.h);
-                    ctx.strokeRect(pos.x, pos.y, size.w, size.h);
                     ctx.drawImage(graphics.get("dirt"), pos.x, pos.y, size.w, size.h);
-                    
                 }
                 else if(tile==".") {
-                    ctx.drawImage(graphics.get("sky"), pos.x, pos.y, size.w, size.h);
+                   // ctx.drawImage(graphics.get("sky"), pos.x, pos.y, size.w, size.h);
+                }
+                else if(tile=="f") {
+                    ctx.drawImage(graphics.get("flower1"), pos.x, pos.y, size.w, size.h);
+                }
+                else if(tile=="F") {
+                    ctx.drawImage(graphics.get("flower2"), pos.x, pos.y, size.w, size.h);
+                }
+                else if(tile=="g") {
+                    ctx.drawImage(graphics.get("grass"), pos.x, pos.y, size.w, size.h);
 
                 }
             }

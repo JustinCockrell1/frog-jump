@@ -8,6 +8,7 @@ const io = new Server(server);
 app.use(express.static("public"));
 
 const frogs = [];
+const users = [];
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -15,9 +16,29 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-    frogs.push({x:5,y:5});
-    io.emit("setfrogs", frogs);
-    socket.emit("setid", frogs.length-1);
+    
+    users.push(socket);
+    socket.emit("setfrogs", frogs);
+    socket.emit("setid", users.length-1);
+    io.emit("addfrog", {x:15, y:55,d:1});
+    frogs.push({x:15,y:55,d:1});
+
+
+    socket.on('disconnect', (msg)=> {
+        const i = users.indexOf(socket);
+        users.splice(i,1);
+        frogs.splice(i,1);
+        io.emit('userdisconnect',i);
+        console.log('user disconnected');
+    });
+
+    socket.on('p-update',(msg)=>{
+        const i = users.indexOf(socket);
+        //console.log(msg)
+        frogs[i]=msg;
+        socket.broadcast.emit('p-update', {pos:frogs[i], id:i});
+        
+    });
 });
 
 server.listen(3000, () => {

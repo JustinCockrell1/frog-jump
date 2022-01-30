@@ -3,6 +3,7 @@ class Player extends PhysicsObject {
         super(x,y,1,1,0,0,true);
         this.onGround = false;
         this.canJump = true;
+        this.dir = 1;
     }
 
     draw() {
@@ -10,7 +11,12 @@ class Player extends PhysicsObject {
         const size = camera.getSize(this.w, this.h);
         //ctx.fillStyle="blue";
        // ctx.fillRect(pos.x, pos.y, size.w, size.h);
+       if(this.dir==1) 
         ctx.drawImage(graphics.get("frogresting"), pos.x, pos.y, size.w, size.h);
+        else if(this.dir==-1) {
+            ctx.drawImage(graphics.get("frogrestingleft"), pos.x, pos.y, size.w, size.h);
+
+        }
     }
 
     jump() {
@@ -19,9 +25,9 @@ class Player extends PhysicsObject {
 
     handleCollisions() {
         const points = [{x:0,y:0},{x:1,y:0},{x:0,y:.9},{x:.9,y:.9}];
-
+        const hittable = ["#","g"];
         for(let i = 0; i < points.length; i++) {
-            if(tileMap.hitTile(this.x+points[i].x, this.y+points[i].y)=='#') {
+            if(hittable.includes(tileMap.hitTile(this.x+points[i].x, this.y+points[i].y))) {
                 const tileL = Math.floor(this.x+points[i].x);
                 const tileT = Math.floor(this.y+points[i].y);
                 const tileR = tileL+1;
