@@ -54,5 +54,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen(process.env.PORT || 3000, () => {
-  console.log('listening on *:3000');
+  console.log('listening on localhost:3000');
 });
